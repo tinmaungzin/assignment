@@ -13,7 +13,7 @@ describe("CardItem", () => {
       id: "NEWILDWATER",
     };
 
-    render(<CardItem game={game} activeCategory="top" />);
+    render(<CardItem game={game} activeCategory="top" jackpots={[]} />);
 
     const gameName = screen.getByText("Test Game");
     expect(gameName).toBeInTheDocument();

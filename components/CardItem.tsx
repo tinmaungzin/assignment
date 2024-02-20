@@ -92,9 +92,10 @@ type Jackpot = {
 type CardItemProps = {
   game: Game;
   activeCategory: string;
+  jackpots: Jackpot[];
 };
 
-const CardItem: React.FC<CardItemProps> = ({ game, activeCategory }) => {
+const CardItem: React.FC<CardItemProps> = ({ game, activeCategory, jackpots }) => {
   const imageUrl = game.image.startsWith("//")
     ? `https:${game.image}`
     : game.image;
@@ -106,25 +107,8 @@ const CardItem: React.FC<CardItemProps> = ({ game, activeCategory }) => {
 
   const ribbonText = game.categories.includes("top") ? "top" : "new";
 
-  const [jackpots, setJackpots] = useState<Jackpot[]>([]);
   const [jackpot, setJackpot] = useState<Jackpot | null>(null);
 
-  useEffect(() => {
-    const fetchJackpots = () => {
-      fetch("http://stage.whgstage.com/front-end-test/jackpots.php")
-        .then((response) => response.json())
-        .then((data) => setJackpots(data))
-        .catch((error) => console.error("Error:", error));
-    };
-
-    fetchJackpots();
-
-    const intervalId = setInterval(fetchJackpots, 3000);
-
-    return () => {
-      clearInterval(intervalId);
-    };
-  }, []);
 
   useEffect(() => {
     const jackpot = jackpots.find((jackpot) => jackpot.game === game.id);

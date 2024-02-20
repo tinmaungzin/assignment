@@ -30,15 +30,37 @@ type CardsProps = {
   activeCategory: string;
 };
 
+type Jackpot = {
+  game: string;
+  amount: number;
+};
+
 const Cards: React.FC<CardsProps> = ({ activeCategory }) => {
   const [games, setGames] = useState<Game[]>([]);
   const [filteredGames, setFilteredGames] = useState<Game[]>([]);
+  const [jackpots, setJackpots] = useState<Jackpot[]>([]);
+
 
   useEffect(() => {
     fetch("http://stage.whgstage.com/front-end-test/games.php")
       .then((response) => response.json())
       .then((data) => setGames(data))
       .catch((error) => console.error("Error:", error));
+
+    const fetchJackpots = () => {
+      fetch("http://stage.whgstage.com/front-end-test/jackpots.php")
+        .then((response) => response.json())
+        .then((data) => setJackpots(data))
+        .catch((error) => console.error("Error:", error));
+    };
+
+    fetchJackpots();
+
+    const intervalId = setInterval(fetchJackpots, 3000);
+
+    return () => {
+      clearInterval(intervalId);
+    };
   }, []);
 
   useEffect(() => {
@@ -53,15 +75,10 @@ const Cards: React.FC<CardsProps> = ({ activeCategory }) => {
     setFilteredGames(filteredGames);
   }, [activeCategory, games]);
 
-
   return (
     <Grid>
       {filteredGames.map((game) => (
-        <CardItem
-          key={game.id}
-          game={game}
-          activeCategory={activeCategory}
-        />
+        <CardItem key={game.id} game={game} activeCategory={activeCategory} jackpots={jackpots} />
       ))}
     </Grid>
   );
