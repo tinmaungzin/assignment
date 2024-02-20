@@ -131,12 +131,9 @@ const CardItem: React.FC<CardItemProps> = ({ game, activeCategory }) => {
     setJackpot(jackpot || null);
   }, [jackpots, game.id]);
 
-  console.log("jackpot", jackpots);
-
   return (
     <CardWrapper>
-      {jackpot ? <Banner>£ {jackpot.amount}</Banner> : null}
-      {/* {jackpot && <Banner>£ {jackpot.amount}</Banner>} */}
+      {jackpot && <Banner>£ {jackpot.amount}</Banner>}
 
       {hasRibbon && <Ribbon>{ribbonText}</Ribbon>}
       <GameImage
