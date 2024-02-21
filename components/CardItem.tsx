@@ -157,8 +157,6 @@ const CardItem: React.FC<CardItemProps> = ({
   const hasRibbon =
     game.categories.includes("top") || game.categories.includes("new");
 
-  const ribbonText = game.categories.includes("top") ? "top" : "new";
-
   const [jackpot, setJackpot] = useState<Jackpot | null>(null);
 
   useEffect(() => {
@@ -171,17 +169,20 @@ const CardItem: React.FC<CardItemProps> = ({
       {jackpot && <Banner>£ {jackpot.amount}</Banner>}
 
       {hasRibbon &&
-        (ribbonText === "top" &&
-        (activeCategory === "new" || activeCategory !== "top") ? (
+        game.categories.includes("top") &&
+        activeCategory !== "top" && (
           <LeftRibbon>
-            <span>{ribbonText}</span>
+            <span>Top</span>
           </LeftRibbon>
-        ) : (ribbonText === "new" && activeCategory === "top") ||
-          (activeCategory !== "new" && activeCategory !== "top") ? (
+        )}
+      {hasRibbon &&
+        game.categories.includes("new") &&
+        activeCategory !== "new" && (
           <Ribbon>
-            <span>{ribbonText}</span>
+            <span>New</span>
           </Ribbon>
-        ) : null)}
+        )}
+
       <GameImage
         src={imageUrl}
         alt={game.name}

@@ -72,15 +72,6 @@ const Cards: React.FC<CardsProps> = ({ activeCategory }) => {
       }
       return game.categories.includes(activeCategory);
     });
-    filteredGames.sort((a, b) => {
-      if (a.categories.includes("top") || a.categories.includes("new")) {
-        return -1;
-      }
-      if (b.categories.includes("top") || b.categories.includes("new")) {
-        return 1;
-      }
-      return 0;
-    });
     setFilteredGames(filteredGames);
   }, [activeCategory, games]);
 
